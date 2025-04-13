@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Workouts</title>
+</head>
+<body>
+    <h1>Your Workouts</h1>
+    <ul>
+        {% for workout in workouts %}
+            <li>{{ workout.activity.name }} -{{workout.weight}} kg - {{ workout.duration }} mins - {{workout.reps}} reps {{workout.date}}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_workout' %}">Add Another Workout</a>
+</body>
+</html>
+

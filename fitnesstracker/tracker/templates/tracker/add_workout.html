@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Add Workout</title>
+  <style>
+    .exercise-block {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+    .timer {
+      font-weight: bold;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Add Workout</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <div id="exerciseContainer">
+      <!-- Default exercise block -->
+      <div class="exercise-block" id="exercise-1">
+        <h4>Exercise 1</h4>
+        <input type="text" name="name_1" placeholder="Exercise Name">
+        <input type="number" name="sets_1" placeholder="Sets">
+        <input type="number" name="reps_1" placeholder="Reps">
+        <input type="number" name="weight_1" placeholder="Weight (kg)">
+        <div>
+          <button type="button" onclick="startTimer(1)">Start</button>
+          <button type="button" onclick="stopTimer(1)">Stop</button>
+          <span id="timer_1" class="timer">0s</span>
+          <input type="hidden" name="timer_1" id="input_timer_1" value="0">
+        </div>
+        {% if completed_exercises and i in completed_exercises %}
+          <span style="color: green;">✅</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <input type="hidden" name="exercise_count" id="exercise_count" value="1">
+    <button type="button" onclick="addExercise()">+ Add Exercise</button>
+    <br><br>
+    <a href="{%url 'display_today_workout'%}">Submit Workout</a>
+  </form>
+
+  <script>
+    let count = 1;
+    const timers = {};
+    const timerIntervals = {};
+
+    function addExercise() {
+      count++;
+      document.getElementById("exercise_count").value = count;
+
+      const container = document.getElementById("exerciseContainer");
+      const div = document.createElement("div");
+      div.classList.add("exercise-block");
+      div.id = `exercise-${count}`;
+      div.innerHTML = `
+        <h4>Exercise ${count}</h4>
+        <input type="text" name="name_${count}" placeholder="Exercise Name">
+        <input type="number" name="sets_${count}" placeholder="Sets">
+        <input type="number" name="reps_${count}" placeholder="Reps">
+        <input type="number" name="weight_${count}" placeholder="Weight (kg)">
+        <div>
+          <button type="button" onclick="startTimer(${count})">Start</button>
+          <button type="button" onclick="stopTimer(${count})">Stop</button>
+          <span id="timer_${count}" class="timer">0s</span>
+          <input type="hidden" name="timer_${count}" id="input_timer_${count}" value="0">
+        </div>
+      `;
+      container.appendChild(div);
+    }
+
+    function startTimer(index) {
+      if (!timers[index]) timers[index] = 0;
+
+      if (timerIntervals[index]) return;  // prevent multiple timers
+
+      timerIntervals[index] = setInterval(() => {
+        timers[index]++;
+        document.getElementById(`timer_${index}`).textContent = timers[index] + 's';
+        document.getElementById(`input_timer_${index}`).value = timers[index];
+      }, 1000);
+    }
+
+    function stopTimer(index) {
+      clearInterval(timerIntervals[index]);
+      timerIntervals[index] = null;
+    }
+  </script>
+</body>
+</html>
