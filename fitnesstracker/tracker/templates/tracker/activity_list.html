@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+   
+    <title>Activity List</title>
+</head>
+<body>
+    <h1>Available Activities</h1>
+    <ul>
+        {% for activity in activities%}
+        <li>{{activity.name}}-{{activity.calories_per_minute}} cal/min</li>
+        {%endfor%}
+    </ul>
+    <a href="{%url 'add_workout'%}">Add workout</a>
+    
+</body>
+</html>

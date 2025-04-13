@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome, {{ user.username }}!</h2>
+
+    <p>This is your fitness tracker dashboard.</p>
+
+    <ul>
+        <li><a href="{% url 'workout_list' %}">View Workouts</a></li>
+        <li><a href="{% url 'add_workout' %}">Add Workout</a></li>
+       
+    </ul>
+</body>
+</html>

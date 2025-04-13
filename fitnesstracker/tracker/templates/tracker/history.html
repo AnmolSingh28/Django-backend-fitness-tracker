@@ -1,0 +1,32 @@
+<!-- tracker/templates/tracker/history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Workout History</title>
+</head>
+<body>
+    <h1>Workout History</h1>
+
+    {% if grouped_workouts %}
+        {% for date, workouts in grouped_workouts.items %}
+            <h2>{{ date }}</h2>
+            {% for workout in workouts %}
+                <ul>
+                    {% for activity in workout.activity_set.all %}
+                        <li>
+                            <strong>{{ activity.name }}</strong> - 
+                            {{ activity.sets }} × {{ activity.reps }}, 
+                            {{ activity.weight }}kg, 
+                            {{ activity.timer }} sec
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p>No workout history available.</p>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}">🏠 Back to Dashboard</a>
+</body>
+</html>

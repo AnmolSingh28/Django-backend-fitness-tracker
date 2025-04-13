@@ -1,0 +1,38 @@
+<!-- tracker/templates/tracker/today_workout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Today's Workout</title>
+    <style>
+        .completed {
+            background-color: #d1fae5;
+            border-left: 5px solid #10b981;
+        }
+    </style>
+</head>
+<body>
+    <h1>Today's Workout</h1>
+
+    {% if activities %}
+        <ul>
+            {% for activity in activities %}
+                <li class="{% if forloop.counter in request.session.completed_exercises %}completed{% endif %}">
+                    <strong>{{ activity.name }}</strong> - 
+                    {{ activity.sets }} sets × {{ activity.reps }} reps, 
+                    {{ activity.weight }}kg, 
+                    Duration: {{ activity.timer }} sec
+                    {% if forloop.counter in request.session.completed_exercises %}
+                        ✅
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No workout added yet today.</p>
+    {% endif %}
+
+    <a href="{% url 'add_workout' %}">➕ Add More Exercises</a>
+    <br>
+    <a href="{% url 'history' %}">📜 View History</a>
+</body>
+</html>

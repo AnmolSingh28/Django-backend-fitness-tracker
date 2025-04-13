@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<body>
+    
+    <h2 id="timerDisplay">0s</h2>
+
+    <input type="hidden" name="duration" id="duration_input">
+    
+    <button type="button" onclick="startTimer()">Start</button>
+    <button type="button" onclick="stopTimer()">Stop</button>
+    <button type="submit" form="myForm">Submit</button>
+    
+    <form method="POST" id="myForm">
+      {% csrf_token %}
+      <input type="hidden" name="duration" id="duration_input_hidden">
+    </form>
+    
+    <script>
+    let timer = null;
+    let seconds = 0;
+    
+    function updateDisplay() {
+      document.getElementById('timerDisplay').innerText = seconds + 's';
+    }
+    
+    function startTimer() {
+      if (!timer) {
+        timer = setInterval(() => {
+          seconds++;
+          updateDisplay();
+        }, 1000);
+      }
+    }
+    
+    function stopTimer() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+    
+        // Save final duration to form input
+        document.getElementById('duration_input_hidden').value = seconds;
+      }
+    }
+   
+    
+    
+    
+    
+    
+</script>
+</body>
+</html>
